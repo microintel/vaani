@@ -1,0 +1,29 @@
+{
+  "name": "vaani-sign-language-detector",
+  "productName": "Vaani",
+  "version": "1.0.0",
+  "description": "Real-time sign language detector (web + Electron)",
+  "main": "electron/main.js",
+  "scripts": {
+    "postinstall": "node scripts/copy-mediapipe.js",
+    "web": "serve src -l 5173",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "@mediapipe/hands": "^0.4.1675469240"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "serve": "^14.2.4"
+  },
+  "build": {
+    "appId": "com.microintel.vaani",
+    "productName": "Vaani",
+    "files": ["electron/**", "src/**"],
+    "mac": { "extendInfo": { "NSCameraUsageDescription": "Vaani uses the camera to detect hand signs." } },
+    "win": { "target": "nsis" },
+    "linux": { "target": "AppImage" }
+  }
+}

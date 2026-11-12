@@ -1,0 +1,155 @@
+/* ---------- Tokens ---------- */
+:root{
+  --bg:#f4f4f6;
+  --card:#ffffff;
+  --inset:#f6f6f8;
+  --line:rgba(0,0,0,.08);
+  --text:#16161a;
+  --muted:#76767f;
+  --accent:#22c55e;
+  --btn:#16161a;
+  --btn-text:#ffffff;
+  --sec:#ffffff;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  --key-shadow:0 1px 0 rgba(0,0,0,.06),0 2px 0 rgba(0,0,0,.04);
+  --stage:#0c0c0e;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#09090b;
+  --card:#131316;
+  --inset:#0d0d10;
+  --line:rgba(255,255,255,.08);
+  --text:#f2f2f5;
+  --muted:#85858f;
+  --accent:#34d399;
+  --btn:#f2f2f5;
+  --btn-text:#0b0b0d;
+  --sec:#1b1b20;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  --key-shadow:0 1px 0 rgba(0,0,0,.6),0 2px 0 rgba(0,0,0,.35);
+  --stage:#000;
+  color-scheme:dark;
+}
+
+/* ---------- Base ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  min-height:100vh;padding:20px 28px 36px;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease,color .25s ease;
+}
+h1{font-size:1.05rem;font-weight:600;letter-spacing:-.01em}
+h2{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+
+/* ---------- Layout ---------- */
+.container{max-width:1800px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.layout{display:flex;align-items:flex-start;gap:20px;max-width:1800px;margin:0 auto}
+/* Camera takes as much room as the screen height allows (4:3, no cropping); the side column fills the rest */
+.camera-card{flex:0 0 auto;width:min(calc(100% - 380px),calc((100vh - 200px) * 1.3334 + 34px));min-width:480px}
+.side{flex:1 1 0;min-width:340px;display:flex;flex-direction:column;gap:20px}
+@media(max-width:1000px){
+  body{padding:20px 14px 36px}
+  .layout{flex-direction:column;align-items:stretch}
+  .camera-card{width:100%;min-width:0}
+  .side{min-width:0}
+}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- Card ---------- */
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;
+  box-shadow:var(--shadow);transition:background .25s ease,border-color .25s ease;
+}
+
+/* ---------- Camera stage ---------- */
+.stage{
+  position:relative;width:100%;aspect-ratio:4/3;background:var(--stage);
+  border-radius:14px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 60px rgba(0,0,0,.45);
+}
+.stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(120% 120% at 50% 40%,transparent 60%,rgba(0,0,0,.28) 100%);z-index:1}
+
+.overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:24px;color:#a1a1aa;font-size:.85rem;z-index:2;
+  background:linear-gradient(160deg,#1a1a1f,#0c0c0e);
+}
+.overlay:empty::before{
+  content:"";width:44px;height:44px;opacity:.55;
+  background:no-repeat center/contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><path d='M23 7l-7 5 7 5V7z'/><rect x='1' y='5' width='15' height='14' rx='3'/></svg>");
+}
+.overlay.hidden{display:none}
+
+.pill{
+  position:absolute;top:12px;left:12px;z-index:3;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 11px;border-radius:999px;font-size:.72rem;font-weight:500;color:#fff;
+  background:rgba(20,20,24,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.12);
+}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:#71717a}
+body.live .pill::before{background:var(--accent);box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 6px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+
+/* ---------- Buttons ---------- */
+button{
+  font-family:inherit;background:var(--btn);color:var(--btn-text);border:1px solid transparent;
+  padding:10px 18px;border-radius:12px;font-weight:600;cursor:pointer;font-size:.85rem;
+  box-shadow:0 1px 2px rgba(0,0,0,.12);
+  transition:transform .08s ease,opacity .15s ease,background .2s ease,border-color .2s ease;
+}
+button:hover{opacity:.88}
+button:active{transform:scale(.97)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.sec{background:var(--sec);color:var(--text);border-color:var(--line);box-shadow:var(--key-shadow)}
+button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.icon-btn{
+  width:38px;height:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:50%;box-shadow:var(--shadow);
+}
+.icon-btn .i-moon{display:none}
+:root[data-theme="dark"] .icon-btn .i-sun{display:none}
+:root[data-theme="dark"] .icon-btn .i-moon{display:block}
+
+/* ---------- Detection panel ---------- */
+.detected{text-align:center;padding:22px 8px 10px}
+.big{font-size:5rem;font-weight:700;line-height:1;min-height:5rem;letter-spacing:-.03em;color:var(--text)}
+.name{color:var(--muted);margin-top:10px;min-height:1.3em;font-size:.88rem}
+.bar{height:4px;background:var(--inset);border-radius:2px;margin-top:18px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.bar>div{height:100%;width:0;background:var(--accent);border-radius:2px;transition:width .08s linear}
+
+/* ---------- Text output ---------- */
+.out{
+  min-height:84px;background:var(--inset);border:1px solid var(--line);border-radius:12px;padding:12px 14px;
+  font-size:1.25rem;letter-spacing:.5px;word-break:break-word;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.06);
+}
+
+/* ---------- Legend ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.sign{
+  background:var(--inset);border:1px solid var(--line);border-radius:12px;padding:12px 10px;
+  font-size:.72rem;line-height:1.35;color:var(--muted);box-shadow:var(--key-shadow);
+  transition:border-color .15s ease,transform .15s ease,background .2s ease;
+}
+.sign b{display:block;color:var(--text);font-size:1.3rem;font-weight:600;margin-bottom:4px}
+.sign{position:relative}
+.sign.two::after{content:"2×";position:absolute;top:8px;right:9px;font-size:.62rem;font-weight:600;color:var(--muted);opacity:.8}
+.sign.on{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 0 0 1px var(--accent),var(--key-shadow)}
+
+/* ---------- Footer ---------- */
+.footer{margin-top:20px;text-align:center;font-size:.75rem;letter-spacing:.02em;color:var(--muted)}
+
+/* Logo + PWA install button */
+h1{display:flex;align-items:center;gap:10px}
+.logo{width:28px;height:28px;border-radius:8px;display:block}
+.top-actions{display:flex;align-items:center;gap:8px}
+.install-btn{padding:6px 14px;font-size:.85rem;border-radius:999px}
+.install-btn[hidden]{display:none}
